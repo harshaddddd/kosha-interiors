@@ -1,267 +1,253 @@
 'use client'
-
 import { useEffect, useRef, useState } from 'react'
 
 const REVIEWS = [
   {
-    id: 1,
     name: 'Hemant S.',
-    project: '3BHK Full Home · Dhanori',
+    project: '3BHK · Dhanori',
     rating: 5,
-    date: 'March 2024',
-    avatar: 'H',
-    avatarBg: '#D4A373',
-    text: 'Vrushali did beautifully — she very well balanced the communication and work between us and the renovation team. She understood our requirements, gave us options at every step, and made sure we were never stressed about anything. Highly recommend.',
-    highlight: 'never stressed',
-    featured: true,
+    text: "Vrushali beautifully balanced the communication and work between us and the renovation team. We never had to worry about a single thing — she handled everything.",
+    highlight: 'never had to worry',
+    initial: 'H',
   },
   {
-    id: 2,
     name: 'Prateek M.',
-    project: '2BHK Renovation · Kharadi',
+    project: '2BHK · Kharadi',
     rating: 5,
-    date: 'January 2024',
-    avatar: 'P',
-    avatarBg: '#6B8F71',
-    text: 'Budget-friendly without any compromise on quality. Vrushali was upfront about every cost from day one. No hidden charges, no surprises. The work was completed within the promised timeline. Our flat looks stunning.',
+    text: "Budget-friendly without compromising on quality. She was upfront about every cost from day one. No hidden charges, no surprises. The flat looks absolutely stunning.",
     highlight: 'budget-friendly',
-    featured: true,
+    initial: 'P',
   },
   {
-    id: 3,
     name: 'Akash & Priya R.',
-    project: '3BHK Turnkey · Viman Nagar',
+    project: '3BHK · Viman Nagar',
     rating: 5,
-    date: 'November 2023',
-    avatar: 'A',
-    avatarBg: '#8C7B6B',
-    text: 'We were nervous about starting a full renovation but Vrushali made the entire process smooth. The 3D designs she showed us before starting were exactly how the final home turned out. Timelines were respected and the quality of work is excellent.',
+    text: "The 3D designs she showed us before starting were exactly how the final home turned out. Timelines were respected and the quality is excellent. Outstanding experience.",
     highlight: 'timelines were respected',
-    featured: false,
+    initial: 'A',
   },
   {
-    id: 4,
     name: 'Sunita K.',
-    project: 'Modular Kitchen · Kalyani Nagar',
+    project: 'Kitchen · Kalyani Nagar',
     rating: 5,
-    date: 'September 2023',
-    avatar: 'S',
-    avatarBg: '#A0836B',
-    text: 'Got my modular kitchen done by Kosha Interiors. Vrushali suggested layouts I hadn\'t considered and the final result is functional and gorgeous. She was available on call throughout the project. 5 stars without hesitation.',
+    text: "Got my modular kitchen done by Kosha Interiors. The final result is functional and gorgeous. She was available on call throughout the entire project.",
     highlight: 'functional and gorgeous',
-    featured: false,
+    initial: 'S',
   },
   {
-    id: 5,
     name: 'Rahul D.',
-    project: '2BHK Interior · Wakad',
+    project: '2BHK · Wakad',
     rating: 5,
-    date: 'July 2023',
-    avatar: 'R',
-    avatarBg: '#7A8C86',
-    text: 'What I appreciated most was the transparency. Every week I got photo updates from site without having to ask. Vrushali managed all the workers so I could focus on my job. The home is exactly what we dreamed of.',
+    text: "What I appreciated most was the transparency. Every week I got photo updates from the site. Vrushali managed all the workers so I could focus on my work.",
     highlight: 'transparency',
-    featured: false,
-  },
-  {
-    id: 6,
-    name: 'Meghna T.',
-    project: 'Living Room & Bedroom · Baner',
-    rating: 5,
-    date: 'May 2023',
-    avatar: 'M',
-    avatarBg: '#C4A882',
-    text: 'Extremely professional. Vrushali has a great eye for detail and a calm, reassuring communication style. She made design choices that genuinely suited our lifestyle and family\'s habits. Would hire again in a heartbeat.',
-    highlight: 'professional',
-    featured: false,
+    initial: 'R',
   },
 ]
 
-function highlightText(text, keyword) {
-  if (!keyword) return text
-  const parts = text.split(new RegExp(`(${keyword})`, 'gi'))
-  return parts.map((part, i) =>
-    part.toLowerCase() === keyword.toLowerCase()
-      ? <mark key={i} style={{ background: 'rgba(212,163,115,0.2)', color: 'var(--accent)', padding: '0 2px', borderRadius: '2px', fontWeight: 600 }}>{part}</mark>
-      : part
-  )
-}
-
 export default function Testimonials() {
   const sectionRef = useRef(null)
-  const [activeIdx, setActiveIdx] = useState(0)
-  const featured = REVIEWS.filter(r => r.featured)
-  const rest     = REVIEWS.filter(r => !r.featured)
+  const [active, setActive] = useState(0)
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'))
-            observer.unobserve(entry.target)
-          }
-        })
-      },
-      { threshold: 0.1 }
-    )
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'))
+          observer.unobserve(entry.target)
+        }
+      })
+    }, { threshold: 0.08 })
     if (sectionRef.current) observer.observe(sectionRef.current)
     return () => observer.disconnect()
   }, [])
+
+  // Auto-advance
+  useEffect(() => {
+    const t = setInterval(() => setActive(a => (a + 1) % REVIEWS.length), 5000)
+    return () => clearInterval(t)
+  }, [])
+
+  const current = REVIEWS[active]
 
   return (
     <section
       ref={sectionRef}
       id="reviews"
-      aria-label="Client testimonials and Google reviews"
-      className="section-pad"
-      style={{ background: 'var(--green-lt)' }}
+      style={{
+        background: 'var(--ink)',
+        padding: 'clamp(72px,10vw,128px) 0',
+        position: 'relative', overflow: 'hidden',
+      }}
+      aria-label="Client testimonials"
     >
-      <div className="container mx-auto px-5 md:px-10">
+      {/* Giant decorative quote */}
+      <span
+        aria-hidden="true"
+        style={{
+          position: 'absolute', top: -40, left: 'clamp(16px,4vw,48px)',
+          fontFamily: 'var(--ff-display)',
+          fontSize: 'clamp(200px,25vw,340px)',
+          fontWeight: 700, lineHeight: 1,
+          color: 'rgba(255,255,255,0.028)',
+          userSelect: 'none', pointerEvents: 'none',
+          letterSpacing: '-0.05em',
+        }}
+      >"</span>
+
+      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 clamp(20px,5vw,60px)' }}>
 
         {/* Header */}
-        <div className="max-w-xl mx-auto text-center mb-14">
-          <span className="section-tag reveal">Client Stories</span>
-          <h2
-            className="text-h2 reveal reveal-d1"
-            style={{ fontFamily: 'var(--ff-serif)' }}
+        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 'clamp(48px,7vw,88px)', flexWrap: 'wrap', gap: 20 }}>
+          <div>
+            <p className="section-label reveal" style={{ color: 'var(--gold)', marginBottom: 14 }}>Client Stories</p>
+            <h2
+              className="reveal reveal-d1"
+              style={{
+                fontFamily: 'var(--ff-display)',
+                fontSize: 'clamp(34px,4.5vw,64px)',
+                fontWeight: 300, lineHeight: 0.98,
+                letterSpacing: '-0.025em', color: 'var(--cream)',
+              }}
+            >
+              What Pune homeowners<br />
+              <em style={{ fontStyle: 'italic', color: 'var(--gold)' }}>actually say.</em>
+            </h2>
+          </div>
+
+          {/* Google rating pill */}
+          <div
+            className="reveal reveal-d2"
+            style={{
+              display: 'flex', alignItems: 'center', gap: 12,
+              padding: '12px 20px',
+              border: '1px solid rgba(201,169,110,0.2)',
+              borderRadius: 40,
+            }}
           >
-            What Pune Homeowners Say
-          </h2>
-          <div className="divider divider-center reveal reveal-d1" />
-          <div className="flex items-center justify-center gap-3 reveal reveal-d2">
-            <GoogleRating />
+            <GoogleIcon />
+            <div>
+              <div style={{ display: 'flex', gap: 2 }}>
+                {[...Array(5)].map((_, i) => (
+                  <svg key={i} width="12" height="12" viewBox="0 0 24 24" fill="#C9A96E" aria-hidden="true">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                  </svg>
+                ))}
+              </div>
+              <p style={{ fontSize: 11, color: 'rgba(245,239,230,0.5)', letterSpacing: '0.1em', fontWeight: 600 }}>
+                4.9 · 18 reviews
+              </p>
+            </div>
           </div>
         </div>
 
-        {/* Featured 2-up */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-          {featured.map((review, i) => (
-            <FeaturedCard key={review.id} review={review} delay={i + 1} />
-          ))}
+        {/* Main featured review */}
+        <div
+          className="reveal reveal-d2"
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr 2fr',
+            gap: 'clamp(32px,6vw,80px)',
+            alignItems: 'center',
+            borderTop: '1px solid rgba(245,239,230,0.08)',
+            paddingTop: 'clamp(40px,6vw,72px)',
+            flexWrap: 'wrap',
+          }}
+        >
+          {/* Left: reviewer dots */}
+          <div>
+            <p style={{
+              fontFamily: 'var(--ff-display)',
+              fontSize: 'clamp(13px,1.2vw,16px)',
+              color: 'rgba(245,239,230,0.4)',
+              letterSpacing: '0.08em', textTransform: 'uppercase',
+              marginBottom: 32, fontWeight: 400,
+            }}>
+              {active + 1} / {REVIEWS.length}
+            </p>
+
+            {/* Reviewer stacked list */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+              {REVIEWS.map((r, i) => (
+                <button
+                  key={i}
+                  onClick={() => setActive(i)}
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: 14,
+                    background: 'none', border: 'none', padding: '8px 0',
+                    borderLeft: `2px solid ${i === active ? 'var(--gold)' : 'transparent'}`,
+                    paddingLeft: 16,
+                    transition: 'all 0.3s',
+                  }}
+                >
+                  <span style={{
+                    width: 32, height: 32,
+                    borderRadius: '50%',
+                    background: i === active ? 'var(--gold)' : 'rgba(245,239,230,0.08)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontFamily: 'var(--ff-display)', fontSize: 14, fontWeight: 600,
+                    color: i === active ? 'var(--ink)' : 'rgba(245,239,230,0.4)',
+                    flexShrink: 0,
+                    transition: 'all 0.3s',
+                  }}>{r.initial}</span>
+                  <div style={{ textAlign: 'left' }}>
+                    <p style={{ fontSize: 13, fontWeight: 600, color: i === active ? 'var(--cream)' : 'rgba(245,239,230,0.4)', transition: 'color 0.3s' }}>{r.name}</p>
+                    <p style={{ fontSize: 10, color: 'rgba(245,239,230,0.3)', letterSpacing: '0.08em', textTransform: 'uppercase', fontWeight: 500 }}>{r.project}</p>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Right: quote */}
+          <div key={active}>
+            <blockquote
+              style={{
+                fontFamily: 'var(--ff-display)',
+                fontSize: 'clamp(22px,3vw,40px)',
+                fontWeight: 300,
+                lineHeight: 1.35,
+                letterSpacing: '-0.01em',
+                color: 'var(--cream)',
+                marginBottom: 32,
+                fontStyle: 'italic',
+                animation: 'fadeQuote 0.5s ease forwards',
+              }}
+            >
+              "{current.text}"
+            </blockquote>
+
+            <div style={{ display: 'flex', gap: 3, marginBottom: 12 }}>
+              {[...Array(current.rating)].map((_, i) => (
+                <svg key={i} width="14" height="14" viewBox="0 0 24 24" fill="var(--gold)" aria-hidden="true">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+              ))}
+            </div>
+
+            <p style={{ fontFamily: 'var(--ff-body)', fontSize: 13, fontWeight: 700, color: 'var(--gold)', letterSpacing: '0.06em' }}>
+              {current.name}
+            </p>
+            <p style={{ fontSize: 11, color: 'rgba(245,239,230,0.4)', letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 500, marginTop: 2 }}>
+              {current.project}
+            </p>
+          </div>
         </div>
 
-        {/* Secondary 4-up */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {rest.map((review, i) => (
-            <SmallCard key={review.id} review={review} delay={i + 1} />
-          ))}
-        </div>
-
-        {/* Google Review CTA */}
-        <div className="mt-12 text-center reveal">
-          <p className="text-lead mb-4">
-            Read all 18 reviews on Google Maps.
-          </p>
-          <a
-            href="https://g.co/kgs/koshainteriors"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn btn-outline px-7 py-3"
-            aria-label="View all Google reviews for Kosha Interiors"
-          >
-            <GoogleIcon />
-            View All Reviews on Google
-          </a>
-        </div>
+        {/* Mobile grid fix */}
+        <style>{`
+          @keyframes fadeQuote { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
+          @media (max-width: 767px) {
+            #reviews > div > div:last-child { grid-template-columns: 1fr !important; }
+          }
+        `}</style>
       </div>
     </section>
   )
 }
 
-/* ── Featured Review Card ─────────────────────────────────── */
-function FeaturedCard({ review, delay }) {
+function GoogleIcon() {
   return (
-    <article
-      className={`reveal reveal-d${delay} card p-7 flex flex-col gap-5`}
-      aria-label={`Review by ${review.name}`}
-      style={{ background: 'var(--surface)' }}
-    >
-      <div className="flex items-start justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <div
-            className="w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0 font-bold text-white text-base"
-            style={{ background: review.avatarBg }}
-            aria-hidden="true"
-          >
-            {review.avatar}
-          </div>
-          <div>
-            <p className="font-semibold text-sm" style={{ color: 'var(--text)' }}>{review.name}</p>
-            <p className="text-xs" style={{ color: 'var(--text-muted)' }}>{review.project}</p>
-          </div>
-        </div>
-        <GoogleIcon small />
-      </div>
-
-      <StarRow count={review.rating} />
-
-      <blockquote
-        className="text-base leading-relaxed flex-1 italic"
-        style={{ fontFamily: 'var(--ff-serif)', color: 'var(--text)' }}
-      >
-        "{highlightText(review.text, review.highlight)}"
-      </blockquote>
-
-      <p className="text-xs" style={{ color: 'var(--text-muted)' }}>{review.date}</p>
-    </article>
-  )
-}
-
-/* ── Small Review Card ────────────────────────────────────── */
-function SmallCard({ review, delay }) {
-  return (
-    <article
-      className={`reveal reveal-d${delay} card p-5 flex flex-col gap-3`}
-      aria-label={`Review by ${review.name}`}
-      style={{ background: 'var(--surface)' }}
-    >
-      <StarRow count={review.rating} size={12} />
-      <blockquote
-        className="text-sm leading-relaxed flex-1 italic"
-        style={{ fontFamily: 'var(--ff-serif)', color: 'var(--text)' }}
-      >
-        "{highlightText(review.text, review.highlight)}"
-      </blockquote>
-      <div className="flex items-center justify-between pt-2" style={{ borderTop: '1px solid var(--border)' }}>
-        <div>
-          <p className="text-xs font-semibold" style={{ color: 'var(--text)' }}>{review.name}</p>
-          <p className="text-[11px]" style={{ color: 'var(--text-muted)' }}>{review.project}</p>
-        </div>
-        <GoogleIcon small />
-      </div>
-    </article>
-  )
-}
-
-/* ── Helpers ─────────────────────────────────────────────── */
-function GoogleRating() {
-  return (
-    <div className="flex items-center gap-2 px-4 py-2 rounded-full" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
-      <GoogleIcon />
-      <StarRow count={5} />
-      <span className="font-bold text-sm" style={{ color: 'var(--text)' }}>4.9</span>
-      <span className="text-sm" style={{ color: 'var(--text-muted)' }}>· 18 reviews</span>
-    </div>
-  )
-}
-
-function StarRow({ count = 5, size = 14 }) {
-  return (
-    <div className="flex gap-0.5" aria-label={`${count} out of 5 stars`}>
-      {[...Array(count)].map((_, i) => (
-        <svg key={i} width={size} height={size} viewBox="0 0 24 24" fill="#F5A623" aria-hidden="true">
-          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-        </svg>
-      ))}
-    </div>
-  )
-}
-
-function GoogleIcon({ small = false }) {
-  const s = small ? 18 : 22
-  return (
-    <svg width={s} height={s} viewBox="0 0 24 24" aria-label="Google" role="img">
+    <svg width="20" height="20" viewBox="0 0 24 24" aria-label="Google">
       <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
       <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
       <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>

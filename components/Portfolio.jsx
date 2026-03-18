@@ -1,319 +1,217 @@
 'use client'
-
-import { useState, useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 
-const CATEGORIES = ['All', 'Living Room', 'Kitchen', 'Bedroom', 'Full Home']
-
 const PROJECTS = [
-  {
-    id: 1,
-    title: 'Serene 3BHK — Dhanori',
-    category: 'Full Home',
-    area: '1,450 sq ft',
-    duration: '65 days',
-    budget: '₹14L',
-    image: '/images/project-1.webp',
-    span: 'col-span-2 row-span-2', // large card
-    description: 'A calming, nature-inspired palette for a young family of four.',
-  },
-  {
-    id: 2,
-    title: 'Minimalist Living Room',
-    category: 'Living Room',
-    area: '320 sq ft',
-    duration: '18 days',
-    budget: '₹2.8L',
-    image: '/images/project-2.webp',
-    span: 'col-span-1 row-span-1',
-    description: 'Clean lines and warm wood tones in a compact Pune flat.',
-  },
-  {
-    id: 3,
-    title: 'Modular Kitchen — Kalyani Nagar',
-    category: 'Kitchen',
-    area: '180 sq ft',
-    duration: '22 days',
-    budget: '₹3.2L',
-    image: '/images/project-3.webp',
-    span: 'col-span-1 row-span-1',
-    description: 'Functional L-shaped modular kitchen with soft-close shutters.',
-  },
-  {
-    id: 4,
-    title: 'Master Bedroom — Viman Nagar',
-    category: 'Bedroom',
-    area: '240 sq ft',
-    duration: '14 days',
-    budget: '₹2.1L',
-    image: '/images/project-4.webp',
-    span: 'col-span-1 row-span-1',
-    description: 'Upholstered headboard and built-in wardrobe in dusty rose.',
-  },
-  {
-    id: 5,
-    title: 'Compact 2BHK — Kharadi',
-    category: 'Full Home',
-    area: '890 sq ft',
-    duration: '48 days',
-    budget: '₹9.5L',
-    image: '/images/project-5.webp',
-    span: 'col-span-1 row-span-1',
-    description: 'Smart storage solutions maximising every inch of a starter home.',
-  },
-  {
-    id: 6,
-    title: 'Open Kitchen & Dining',
-    category: 'Kitchen',
-    area: '420 sq ft',
-    duration: '28 days',
-    budget: '₹4.5L',
-    image: '/images/project-6.webp',
-    span: 'col-span-1 row-span-1',
-    description: 'Island kitchen flowing into a warm-toned dining space.',
-  },
+  { id: 1, title: 'Serene 3BHK', location: 'Dhanori', tag: 'Full Home', budget: '14L', image: '/images/project-1.webp', size: 'large' },
+  { id: 2, title: 'Minimalist Living', location: 'Viman Nagar', tag: 'Living Room', budget: '2.8L', image: '/images/project-2.webp', size: 'small' },
+  { id: 3, title: 'Modular Kitchen', location: 'Kalyani Nagar', tag: 'Kitchen', budget: '3.2L', image: '/images/project-3.webp', size: 'small' },
+  { id: 4, title: 'Master Bedroom', location: 'Baner', tag: 'Bedroom', budget: '2.1L', image: '/images/project-4.webp', size: 'wide' },
+  { id: 5, title: 'Compact 2BHK', location: 'Kharadi', tag: 'Full Home', budget: '9.5L', image: '/images/project-5.webp', size: 'small' },
+  { id: 6, title: 'Open Kitchen', location: 'Wakad', tag: 'Kitchen', budget: '4.5L', image: '/images/project-6.webp', size: 'small' },
+]
+
+const GRADIENTS = [
+  'linear-gradient(135deg,#2a2218,#3d2f1e)',
+  'linear-gradient(135deg,#1e2a20,#2d3a28)',
+  'linear-gradient(135deg,#252020,#3a2d28)',
+  'linear-gradient(135deg,#1e2228,#2d3540)',
+  'linear-gradient(135deg,#282018,#3a3020)',
+  'linear-gradient(135deg,#201e28,#302d3a)',
 ]
 
 export default function Portfolio() {
-  const [active, setActive] = useState('All')
-  const [visible, setVisible] = useState([])
   const sectionRef = useRef(null)
 
-  const filtered = active === 'All'
-    ? PROJECTS
-    : PROJECTS.filter(p => p.category === active)
-
-  // Scroll reveal
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'))
-            observer.unobserve(entry.target)
-          }
-        })
-      },
-      { threshold: 0.1 }
-    )
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'))
+          observer.unobserve(entry.target)
+        }
+      })
+    }, { threshold: 0.08 })
     if (sectionRef.current) observer.observe(sectionRef.current)
     return () => observer.disconnect()
   }, [])
-
-  // Stagger card visibility on filter change
-  useEffect(() => {
-    setVisible([])
-    const timers = filtered.map((p, i) =>
-      setTimeout(() => setVisible(v => [...v, p.id]), i * 80)
-    )
-    return () => timers.forEach(clearTimeout)
-  }, [active])
 
   return (
     <section
       ref={sectionRef}
       id="portfolio"
-      aria-label="Our portfolio of completed interior design projects"
-      className="section-pad"
-      style={{ background: 'var(--green-lt)' }}
+      style={{ background: 'var(--cream)', padding: 'clamp(72px,10vw,128px) 0' }}
+      aria-label="Portfolio of completed projects"
     >
-      <div className="container mx-auto px-5 md:px-10">
+      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 clamp(20px,5vw,60px)' }}>
 
-        {/* Header */}
-        <div className="max-w-xl mx-auto text-center mb-10">
-          <span className="section-tag reveal">Our Work</span>
-          <h2 className="text-h2 reveal reveal-d1" style={{ fontFamily: 'var(--ff-serif)' }}>
-            Homes We've Transformed
-          </h2>
-          <div className="divider divider-center reveal reveal-d1" />
-          <p className="text-lead reveal reveal-d2">
-            Every project is delivered on time, within budget, and exactly as envisioned — no surprises.
-          </p>
-        </div>
-
-        {/* Filter Tabs */}
-        <div
-          className="flex flex-wrap gap-2 justify-center mb-10 reveal reveal-d2"
-          role="tablist"
-          aria-label="Filter projects by room type"
-        >
-          {CATEGORIES.map(cat => (
-            <button
-              key={cat}
-              role="tab"
-              aria-selected={active === cat}
-              onClick={() => setActive(cat)}
-              className="px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-250 min-h-[44px] cursor-pointer"
+        {/* Header — asymmetric */}
+        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 'clamp(40px,6vw,72px)', flexWrap: 'wrap', gap: 20 }}>
+          <div>
+            <p className="section-label reveal" style={{ marginBottom: 14 }}>Selected Work</p>
+            <h2
+              className="reveal reveal-d1"
               style={{
-                background: active === cat ? 'var(--accent)' : 'var(--surface)',
-                color:      active === cat ? '#fff'         : 'var(--text-muted)',
-                border:     `1.5px solid ${active === cat ? 'var(--accent)' : 'var(--border)'}`,
-                transform:  active === cat ? 'translateY(-1px)' : 'none',
-                boxShadow:  active === cat ? 'var(--shadow-cta)' : 'none',
+                fontFamily: 'var(--ff-display)',
+                fontSize: 'clamp(38px,5vw,72px)',
+                fontWeight: 300, lineHeight: 0.95,
+                letterSpacing: '-0.025em', color: 'var(--ink)',
               }}
             >
-              {cat}
-            </button>
-          ))}
-        </div>
-
-        {/* Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
-          {filtered.map((project, i) => (
-            <ProjectCard
-              key={project.id}
-              project={project}
-              isVisible={visible.includes(project.id)}
-              index={i}
-            />
-          ))}
-        </div>
-
-        {/* Bottom CTA */}
-        <div className="mt-14 text-center reveal">
-          <p className="text-lead mb-1 font-medium" style={{ color: 'var(--text)' }}>
-            Love what you see?
-          </p>
-          <p className="text-lead mb-5">Let's create something beautiful for your home.</p>
-          <button
-            onClick={() => {
-              const msg = encodeURIComponent("Hi Vrushali! I saw your portfolio and I'd love to discuss my home's interior design.")
-              window.open(`https://wa.me/917700071665?text=${msg}`, '_blank')
-              if (typeof window !== 'undefined' && window.dataLayer) {
-                window.dataLayer.push({ event: 'whatsapp_click', location: 'portfolio' })
-              }
+              Spaces we have<br />
+              <em style={{ fontStyle: 'italic', color: 'var(--gold)' }}>breathed life into.</em>
+            </h2>
+          </div>
+          <a
+            href="#contact"
+            className="reveal reveal-d2"
+            style={{
+              fontFamily: 'var(--ff-body)', fontSize: 11, fontWeight: 700,
+              letterSpacing: '0.14em', textTransform: 'uppercase',
+              color: 'var(--muted)',
+              display: 'flex', alignItems: 'center', gap: 10,
+              borderBottom: '1px solid var(--gold-lt)',
+              paddingBottom: 4,
+              transition: 'color 0.3s',
             }}
-            className="btn btn-primary px-8 py-3.5 text-base"
+            onMouseEnter={e => e.currentTarget.style.color = 'var(--gold)'}
+            onMouseLeave={e => e.currentTarget.style.color = 'var(--muted)'}
           >
-            <WhatsAppIcon />
-            Discuss My Project
-          </button>
+            Start Your Project
+            <svg width="16" height="6" viewBox="0 0 16 6" fill="none" aria-hidden="true">
+              <path d="M0 3h14M11 1l3 2-3 2" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </a>
+        </div>
+
+        {/* Bento grid */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(12, 1fr)',
+          gridTemplateRows: 'auto',
+          gap: 12,
+        }}>
+          {PROJECTS.map((project, i) => {
+            const colSpan = project.size === 'large' ? 7
+              : project.size === 'wide' ? 8
+              : 5
+            const rowSpan = project.size === 'large' ? 2 : 1
+            const aspectRatio = project.size === 'large' ? '3/4'
+              : project.size === 'wide' ? '16/9'
+              : '4/5'
+
+            return (
+              <ProjectCard
+                key={project.id}
+                project={project}
+                gradient={GRADIENTS[i % GRADIENTS.length]}
+                colSpan={colSpan}
+                rowSpan={rowSpan}
+                aspectRatio={aspectRatio}
+                delay={i}
+              />
+            )
+          })}
         </div>
       </div>
     </section>
   )
 }
 
-/* ── Project Card ─────────────────────────────────────────── */
-function ProjectCard({ project, isVisible, index }) {
+function ProjectCard({ project, gradient, colSpan, rowSpan, aspectRatio, delay }) {
   const [hovered, setHovered] = useState(false)
 
   return (
     <article
-      aria-label={project.title}
+      className={`reveal reveal-d${Math.min(delay, 4)}`}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      aria-label={project.title}
       style={{
-        opacity:    isVisible ? 1 : 0,
-        transform:  isVisible ? 'translateY(0)' : 'translateY(18px)',
-        transition: `opacity 0.45s ease ${index * 0.06}s, transform 0.45s ease ${index * 0.06}s`,
-        borderRadius: 'var(--radius-lg)',
+        gridColumn: `span ${colSpan}`,
+        gridRow: rowSpan > 1 ? `span ${rowSpan}` : undefined,
+        position: 'relative',
+        borderRadius: 4,
         overflow: 'hidden',
-        background: 'var(--surface)',
-        border: '1px solid var(--border)',
-        boxShadow: hovered ? 'var(--shadow-lift)' : 'var(--shadow-card)',
-        transform: hovered
-          ? `translateY(-${isVisible ? 5 : 18}px)`
-          : `translateY(${isVisible ? 0 : 18}px)`,
-        cursor: 'default',
+        aspectRatio,
+        background: gradient,
+        transition: 'transform 0.5s cubic-bezier(0.16,1,0.3,1)',
+        transform: hovered ? 'scale(0.985)' : 'scale(1)',
       }}
     >
       {/* Image */}
-      <div
-        className="relative overflow-hidden"
-        style={{ aspectRatio: '4/3' }}
-      >
-        {/* Placeholder gradient while real images load */}
-        <div
-          className="absolute inset-0 z-0"
-          style={{
-            background: `linear-gradient(135deg,
-              hsl(${(project.id * 40) % 360},18%,82%) 0%,
-              hsl(${(project.id * 40 + 30) % 360},14%,74%) 100%)`,
-          }}
-          aria-hidden="true"
-        />
-        <Image
-          src={project.image}
-          alt={project.title}
-          fill
-          className="object-cover z-10"
-          style={{
-            transition: 'transform 0.65s cubic-bezier(0.4,0,0.2,1)',
-            transform:  hovered ? 'scale(1.06)' : 'scale(1)',
-          }}
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-        />
+      <Image
+        src={project.image}
+        alt={project.title}
+        fill
+        style={{
+          objectFit: 'cover',
+          transition: 'transform 0.8s cubic-bezier(0.16,1,0.3,1), opacity 0.5s',
+          transform: hovered ? 'scale(1.06)' : 'scale(1)',
+          opacity: hovered ? 0.85 : 1,
+        }}
+        sizes="(max-width: 768px) 100vw, 60vw"
+      />
 
-        {/* Category pill */}
-        <div className="absolute top-3 left-3 z-20">
-          <span
-            className="px-3 py-1 rounded-full text-xs font-semibold"
-            style={{
-              background: 'rgba(250,249,246,0.92)',
-              color: 'var(--text)',
-              backdropFilter: 'blur(6px)',
-            }}
-          >
-            {project.category}
-          </span>
-        </div>
+      {/* Gradient overlay */}
+      <div style={{
+        position: 'absolute', inset: 0,
+        background: 'linear-gradient(to top, rgba(13,13,13,0.85) 0%, rgba(13,13,13,0.1) 50%, transparent 100%)',
+      }} aria-hidden="true" />
+
+      {/* Tag */}
+      <div style={{
+        position: 'absolute', top: 16, left: 16,
+        padding: '5px 12px',
+        background: 'rgba(13,13,13,0.65)',
+        backdropFilter: 'blur(8px)',
+        borderRadius: 2,
+        fontFamily: 'var(--ff-body)',
+        fontSize: 9, fontWeight: 700,
+        letterSpacing: '0.15em', textTransform: 'uppercase',
+        color: 'var(--gold)',
+        border: '1px solid rgba(201,169,110,0.2)',
+      }}>
+        {project.tag}
       </div>
 
       {/* Info */}
-      <div className="p-5">
-        <h3
-          className="font-semibold mb-1 text-base"
-          style={{ fontFamily: 'var(--ff-serif)', color: 'var(--text)' }}
-        >
+      <div style={{
+        position: 'absolute', bottom: 0, left: 0, right: 0,
+        padding: '20px 20px 20px',
+        transform: hovered ? 'translateY(0)' : 'translateY(8px)',
+        opacity: hovered ? 1 : 0.85,
+        transition: 'transform 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.4s',
+      }}>
+        <p style={{ fontFamily: 'var(--ff-display)', fontSize: 'clamp(16px,2vw,24px)', fontWeight: 500, color: 'var(--cream)', lineHeight: 1.1, marginBottom: 4 }}>
           {project.title}
-        </h3>
-        <p className="text-sm mb-4" style={{ color: 'var(--text-muted)' }}>
-          {project.description}
         </p>
-
-        {/* Meta row */}
-        <div
-          className="flex items-center gap-4 pt-3 text-xs font-medium"
-          style={{ borderTop: '1px solid var(--border)', color: 'var(--text-muted)' }}
-        >
-          <span className="flex items-center gap-1">
-            <AreaIcon /> {project.area}
-          </span>
-          <span className="flex items-center gap-1">
-            <ClockIcon /> {project.duration}
-          </span>
-          <span
-            className="ml-auto font-semibold text-sm"
-            style={{ color: 'var(--accent)' }}
-          >
-            {project.budget}
-          </span>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <p style={{ fontSize: 11, color: 'rgba(245,239,230,0.55)', letterSpacing: '0.08em', textTransform: 'uppercase', fontWeight: 500 }}>
+            {project.location}
+          </p>
+          <p style={{ fontFamily: 'var(--ff-display)', fontSize: 17, color: 'var(--gold)', fontWeight: 500 }}>
+            ₹{project.budget}
+          </p>
         </div>
       </div>
-    </article>
-  )
-}
 
-/* ── Icons ───────────────────────────────────────────────── */
-function AreaIcon() {
-  return (
-    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
-    </svg>
-  )
-}
-function ClockIcon() {
-  return (
-    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
-    </svg>
-  )
-}
-function WhatsAppIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-    </svg>
+      {/* Mobile grid override */}
+      <style>{`
+        @media (max-width: 767px) {
+          article[aria-label="${project.title}"] {
+            grid-column: span 12 !important;
+            grid-row: auto !important;
+            aspect-ratio: 4/3 !important;
+          }
+        }
+        @media (min-width: 768px) and (max-width: 1023px) {
+          article[aria-label="${project.title}"] {
+            grid-column: span 6 !important;
+            grid-row: auto !important;
+          }
+        }
+      `}</style>
+    </article>
   )
 }

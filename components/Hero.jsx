@@ -1,185 +1,233 @@
 'use client'
-
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 
 export default function Hero() {
-  const sectionRef = useRef(null)
+  const [loaded, setLoaded] = useState(false)
+  const imageRef = useRef(null)
+  const numberRef = useRef(null)
 
-  // Subtle parallax on scroll
   useEffect(() => {
-    const el = sectionRef.current
-    if (!el) return
+    const t = setTimeout(() => setLoaded(true), 100)
+    return () => clearTimeout(t)
+  }, [])
+
+  // Parallax on scroll
+  useEffect(() => {
     const handleScroll = () => {
-      const scrollY = window.scrollY
-      const bg = el.querySelector('.hero-bg-img')
-      if (bg) bg.style.transform = `scale(1.06) translateY(${scrollY * 0.18}px)`
+      if (imageRef.current) {
+        imageRef.current.style.transform = `scale(1.08) translateY(${window.scrollY * 0.12}px)`
+      }
     }
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const handleWhatsApp = () => {
-    const msg = encodeURIComponent("Hi Vrushali! I'd like to book a free site visit for my home in Pune.")
-    window.open(`https://wa.me/917700071665?text=${msg}`, '_blank')
-    if (typeof window !== 'undefined' && window.dataLayer) {
-      window.dataLayer.push({ event: 'whatsapp_click', location: 'hero' })
-    }
+  const wa = () => {
+    window.open(`https://wa.me/917700071665?text=${encodeURIComponent("Hi Vrushali! I'd like to book a free site visit.")}`, '_blank')
   }
 
   return (
     <section
-      ref={sectionRef}
       id="home"
-      className="relative min-h-svh flex items-center justify-center overflow-hidden bg-forest"
-      aria-label="Hero — Kosha Interiors"
+      style={{
+        minHeight: '100svh',
+        background: 'var(--ink)',
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
+        gridTemplateRows: '1fr',
+        overflow: 'hidden',
+        position: 'relative',
+      }}
     >
-      {/* ── Background Image ──────────────────────────────── */}
-      <div className="absolute inset-0 overflow-hidden">
-        {/*
-          Replace src with a real high-quality interior photo (WebP, wide-angle,
-          natural light living room). Hosted in /public/images/hero.webp
-        */}
-        <div
-          className="hero-bg-img absolute inset-0 will-change-transform"
-          style={{ transform: 'scale(1.06)' }}
-        >
-          <Image
-            src="/images/hero.webp"
-            alt="Beautifully designed living room by Kosha Interiors, Pune"
-            fill
-            priority
-            quality={90}
-            className="object-cover object-center"
-            sizes="100vw"
-          />
-        </div>
-      </div>
-
-      {/* ── Gradient Overlays ─────────────────────────────── */}
-      {/* Dark vignette for text legibility */}
-      <div
-        className="absolute inset-0 z-10"
-        style={{
-          background:
-            'linear-gradient(135deg, rgba(44,62,56,0.82) 0%, rgba(44,62,56,0.55) 55%, rgba(212,163,115,0.18) 100%)',
-        }}
-        aria-hidden="true"
-      />
-      {/* Bottom fade for smooth section transition */}
-      <div
-        className="absolute bottom-0 left-0 right-0 h-32 z-10"
-        style={{ background: 'linear-gradient(to bottom, transparent, #FAF9F6)' }}
-        aria-hidden="true"
-      />
-
-      {/* ── Content ───────────────────────────────────────── */}
-      <div className="relative z-20 container mx-auto px-5 md:px-10 py-32 flex flex-col items-center text-center md:items-start md:text-left max-w-[800px] md:ml-0">
-
-        {/* Trust badge */}
-        <div
-          className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-sm text-white text-sm font-medium"
-          style={{ animationDelay: '0s' }}
-        >
-          <StarRow />
-          <span>4.9 ★ · Pune's Highest-Rated Interior Studio</span>
-        </div>
-
-        {/* Headline */}
-        <h1
-          className="text-display text-white mb-5 max-w-[700px]"
+      {/* ── Left column — Typography ── */}
+      <div style={{
+        position: 'relative', zIndex: 2,
+        display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
+        padding: 'clamp(100px,12vw,160px) 0 clamp(48px,6vw,80px) clamp(24px,5vw,72px)',
+        gridColumn: '1 / 2',
+      }}>
+        {/* Big background number — decorative */}
+        <span
+          aria-hidden="true"
           style={{
-            fontFamily: 'var(--ff-serif)',
-            fontSize: 'clamp(36px,5.5vw,68px)',
-            lineHeight: 1.1,
-            letterSpacing: '-0.02em',
+            position: 'absolute', top: '50%', left: 0,
+            transform: 'translateY(-65%)',
+            fontFamily: 'var(--ff-display)',
+            fontSize: 'clamp(200px,28vw,380px)',
+            fontWeight: 700, lineHeight: 1,
+            color: 'rgba(255,255,255,0.035)',
+            letterSpacing: '-0.04em',
+            userSelect: 'none',
+            transition: 'opacity 1.5s',
+            opacity: loaded ? 1 : 0,
+          }}
+        >50+</span>
+
+        {/* Label */}
+        <div
+          className="section-label"
+          style={{
+            marginBottom: 28,
+            opacity: loaded ? 1 : 0,
+            transform: loaded ? 'none' : 'translateY(12px)',
+            transition: 'opacity 0.9s cubic-bezier(0.16,1,0.3,1) 0.2s, transform 0.9s cubic-bezier(0.16,1,0.3,1) 0.2s',
           }}
         >
-          Beautiful Homes,{' '}
-          <em className="not-italic" style={{ color: '#D4A373' }}>Executed Flawlessly.</em>
-          <br />
-          On Time & Within Budget.
+          Interior Studio · Pune
+        </div>
+
+        {/* Headline — large editorial serif */}
+        <h1
+          style={{
+            fontFamily: 'var(--ff-display)',
+            fontSize: 'clamp(52px,7.5vw,108px)',
+            fontWeight: 300,
+            lineHeight: 0.95,
+            letterSpacing: '-0.03em',
+            color: 'var(--cream)',
+            maxWidth: '7ch',
+            marginBottom: 40,
+            opacity: loaded ? 1 : 0,
+            transform: loaded ? 'none' : 'translateY(32px)',
+            transition: 'opacity 1s cubic-bezier(0.16,1,0.3,1) 0.35s, transform 1s cubic-bezier(0.16,1,0.3,1) 0.35s',
+          }}
+        >
+          Homes <em style={{ fontStyle: 'italic', color: 'var(--gold)' }}>made</em>{' '}
+          extraordinary.
         </h1>
 
-        {/* Sub-headline */}
-        <p className="text-white/75 text-lg md:text-xl leading-relaxed mb-8 max-w-[560px] font-light">
-          Pune's highest-rated woman-owned interior studio. We handle the design,
-          the contractors, and the chaos — so you don't have to.
-        </p>
-
-        {/* CTAs */}
-        <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+        {/* CTA row */}
+        <div
+          style={{
+            display: 'flex', alignItems: 'center', gap: 24, flexWrap: 'wrap',
+            opacity: loaded ? 1 : 0,
+            transform: loaded ? 'none' : 'translateY(20px)',
+            transition: 'opacity 0.9s cubic-bezier(0.16,1,0.3,1) 0.55s, transform 0.9s cubic-bezier(0.16,1,0.3,1) 0.55s',
+          }}
+        >
+          <button
+            onClick={wa}
+            style={{
+              fontFamily: 'var(--ff-body)', fontSize: 11, fontWeight: 700,
+              letterSpacing: '0.14em', textTransform: 'uppercase',
+              padding: '16px 36px',
+              background: 'var(--gold)', color: 'var(--ink)',
+              border: 'none', borderRadius: 2,
+              transition: 'transform 0.35s cubic-bezier(0.16,1,0.3,1), background 0.3s',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.background = '#dbb87a' }}
+            onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.background = 'var(--gold)' }}
+          >
+            Book Free Visit
+          </button>
           <a
             href="#portfolio"
-            className="btn btn-ghost text-base px-7 py-3.5"
+            style={{
+              fontFamily: 'var(--ff-body)', fontSize: 12, fontWeight: 500,
+              letterSpacing: '0.08em', textTransform: 'uppercase',
+              color: 'rgba(245,239,230,0.55)',
+              display: 'flex', alignItems: 'center', gap: 10,
+              transition: 'color 0.3s',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.color = 'var(--gold)' }}
+            onMouseLeave={e => { e.currentTarget.style.color = 'rgba(245,239,230,0.55)' }}
           >
-            View Our Work
-            <ChevronDown />
+            View Work
+            <svg width="18" height="8" viewBox="0 0 18 8" fill="none" aria-hidden="true">
+              <path d="M0 4h16M13 1l3 3-3 3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
           </a>
-          <button
-            onClick={handleWhatsApp}
-            className="btn btn-primary text-base px-7 py-3.5"
-          >
-            <WhatsAppIcon />
-            Book Free Site Visit
-          </button>
         </div>
 
-        {/* Trust micro-copy */}
-        <p className="mt-5 text-white/50 text-sm">
-          No commitment · Responds within 2 hrs on WhatsApp
-        </p>
+        {/* Bottom line */}
+        <div
+          style={{
+            position: 'absolute', bottom: 0, left: 'clamp(24px,5vw,72px)', right: 0,
+            height: 1, background: 'rgba(245,239,230,0.08)',
+          }}
+          aria-hidden="true"
+        />
       </div>
 
-      {/* ── Scroll Indicator ──────────────────────────────── */}
+      {/* ── Right column — Image ── */}
       <div
-        className="absolute bottom-20 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-1 text-white/40"
-        aria-hidden="true"
+        style={{
+          gridColumn: '2 / 3',
+          position: 'relative',
+          overflow: 'hidden',
+          clipPath: 'polygon(8% 0, 100% 0, 100% 100%, 0% 100%)',
+        }}
       >
-        <span className="text-xs tracking-widest uppercase">Scroll</span>
-        <div className="w-px h-10 bg-white/20 relative overflow-hidden rounded-full">
-          <div
-            className="absolute top-0 left-0 right-0 h-1/2 bg-white/60 rounded-full animate-[scroll_1.8s_ease-in-out_infinite]"
-            style={{ animation: 'scrollDot 1.8s ease-in-out infinite' }}
+        {/* Gradient placeholder while image loads */}
+        <div style={{
+          position: 'absolute', inset: 0,
+          background: 'linear-gradient(160deg, #2a2318 0%, #1a1510 100%)',
+        }} aria-hidden="true" />
+
+        <div ref={imageRef} style={{ position: 'absolute', inset: '-8%', transform: 'scale(1.08)' }}>
+          <Image
+            src="/images/hero.webp"
+            alt="Beautifully designed interior by Kosha Interiors Pune"
+            fill priority quality={90}
+            style={{ objectFit: 'cover', objectPosition: 'center' }}
+            sizes="50vw"
           />
         </div>
+
+        {/* Dark overlay */}
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(13,13,13,0.4) 0%, transparent 60%)' }} aria-hidden="true" />
+
+        {/* Floating info card */}
+        <div
+          style={{
+            position: 'absolute', bottom: 'clamp(28px,5vw,56px)', right: 'clamp(20px,4vw,40px)',
+            background: 'rgba(245,239,230,0.92)',
+            backdropFilter: 'blur(12px)',
+            borderRadius: 4,
+            padding: '20px 24px',
+            minWidth: 180,
+            opacity: loaded ? 1 : 0,
+            transform: loaded ? 'none' : 'translateY(16px)',
+            transition: 'opacity 1s cubic-bezier(0.16,1,0.3,1) 0.8s, transform 1s cubic-bezier(0.16,1,0.3,1) 0.8s',
+          }}
+        >
+          <div style={{ display: 'flex', gap: 4, marginBottom: 6 }}>
+            {[...Array(5)].map((_, i) => (
+              <svg key={i} width="11" height="11" viewBox="0 0 24 24" fill="var(--gold)" aria-hidden="true">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+              </svg>
+            ))}
+          </div>
+          <p style={{ fontFamily: 'var(--ff-display)', fontSize: 15, fontWeight: 600, color: 'var(--ink)', lineHeight: 1.2 }}>
+            4.9 / 5.0
+          </p>
+          <p style={{ fontSize: 10, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--muted)', marginTop: 2, fontWeight: 600 }}>
+            18 Google Reviews
+          </p>
+        </div>
       </div>
 
+      {/* ── Mobile layout override ── */}
       <style>{`
-        @keyframes scrollDot {
-          0%   { top: -50%; }
-          100% { top: 150%; }
+        @media (max-width: 767px) {
+          #home {
+            grid-template-columns: 1fr !important;
+            grid-template-rows: auto auto !important;
+            min-height: 100svh !important;
+          }
+          #home > div:first-child {
+            grid-column: 1 / 2 !important;
+            padding: 120px 24px 48px !important;
+          }
+          #home > div:last-child {
+            grid-column: 1 / 2 !important;
+            clip-path: none !important;
+            height: 55vw !important;
+            min-height: 280px !important;
+          }
         }
       `}</style>
     </section>
-  )
-}
-
-/* ── Helpers ─────────────────────────────────────────────── */
-function StarRow() {
-  return (
-    <span className="flex gap-0.5 text-yellow-400 text-xs" aria-hidden="true">
-      {[...Array(5)].map((_, i) => (
-        <svg key={i} width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-        </svg>
-      ))}
-    </span>
-  )
-}
-
-function WhatsAppIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-    </svg>
-  )
-}
-
-function ChevronDown() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <polyline points="6 9 12 15 18 9" />
-    </svg>
   )
 }

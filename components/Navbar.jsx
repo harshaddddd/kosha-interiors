@@ -1,211 +1,201 @@
 'use client'
-
 import { useState, useEffect } from 'react'
 
-const NAV_LINKS = [
-  { label: 'Our Work',    href: '#portfolio' },
-  { label: 'Services',    href: '#services'  },
-  { label: 'About',       href: '#about'     },
-  { label: 'Process',     href: '#process'   },
-  { label: 'Reviews',     href: '#reviews'   },
+const LINKS = [
+  { label: 'Work',    href: '#portfolio' },
+  { label: 'Studio',  href: '#about'     },
+  { label: 'Process', href: '#process'   },
+  { label: 'Contact', href: '#contact'   },
 ]
 
 export default function Navbar() {
-  const [scrolled,   setScrolled]   = useState(false)
-  const [menuOpen,   setMenuOpen]   = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const [open, setOpen]         = useState(false)
+  const [hoverIdx, setHoverIdx] = useState(null)
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40)
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+    const fn = () => setScrolled(window.scrollY > 60)
+    window.addEventListener('scroll', fn, { passive: true })
+    return () => window.removeEventListener('scroll', fn)
   }, [])
 
-  // Lock body scroll when mobile menu is open
   useEffect(() => {
-    document.body.style.overflow = menuOpen ? 'hidden' : ''
+    document.body.style.overflow = open ? 'hidden' : ''
     return () => { document.body.style.overflow = '' }
-  }, [menuOpen])
+  }, [open])
 
-  const handleWhatsApp = () => {
-    const msg = encodeURIComponent("Hi Vrushali! I'd like to book a free site visit for my home in Pune.")
-    window.open(`https://wa.me/917700071665?text=${msg}`, '_blank')
-    // GTM event
-    if (typeof window !== 'undefined' && window.dataLayer) {
-      window.dataLayer.push({ event: 'whatsapp_click', location: 'navbar' })
-    }
-  }
-
-  const handleCall = () => {
-    if (typeof window !== 'undefined' && window.dataLayer) {
-      window.dataLayer.push({ event: 'call_click', location: 'navbar' })
-    }
+  const wa = () => {
+    const m = encodeURIComponent("Hi Vrushali! I'd like to book a free site visit.")
+    window.open(`https://wa.me/917700071665?text=${m}`, '_blank')
   }
 
   return (
     <>
-      {/* ── Main Navbar ──────────────────────────────────────── */}
-      <header
-        className={[
-          'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-          scrolled
-            ? 'bg-bg/95 backdrop-blur-md shadow-[0_2px_20px_rgba(44,62,56,0.08)] py-3'
-            : 'bg-transparent py-5',
-        ].join(' ')}
-        role="banner"
+      {/* ── Nav bar ── */}
+      <nav
+        style={{
+          position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50,
+          padding: scrolled ? '14px 0' : '24px 0',
+          transition: 'padding 0.4s cubic-bezier(0.16,1,0.3,1), background 0.4s, backdrop-filter 0.4s',
+          background: scrolled ? 'rgba(245,239,230,0.92)' : 'transparent',
+          backdropFilter: scrolled ? 'blur(14px)' : 'none',
+          borderBottom: scrolled ? '1px solid rgba(201,169,110,0.15)' : '1px solid transparent',
+        }}
       >
-        <div className="container mx-auto px-5 md:px-10 flex items-center justify-between gap-6">
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 clamp(20px,5vw,60px)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
 
           {/* Logo */}
-          <a
-            href="#"
-            className="font-serif text-xl font-bold tracking-tight text-forest flex items-center gap-2"
-            aria-label="Kosha Interiors Home"
-          >
-            <span
-              className={`transition-colors duration-300 ${scrolled ? 'text-forest' : 'text-white'}`}
-            >
-              Kosha
-            </span>
-            <span className="text-accent">Interiors</span>
+          <a href="#" style={{ fontFamily: 'var(--ff-display)', fontSize: 22, fontWeight: 600, color: 'var(--ink)', letterSpacing: '-0.01em', lineHeight: 1 }}>
+            Kosha<span style={{ color: 'var(--gold)' }}>.</span>
           </a>
 
-          {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-8" aria-label="Main navigation">
-            {NAV_LINKS.map(({ label, href }) => (
+          {/* Desktop links */}
+          <div style={{ display: 'flex', gap: 40, alignItems: 'center' }} className="hidden md:flex">
+            {LINKS.map(({ label, href }, i) => (
               <a
                 key={href}
                 href={href}
-                className={[
-                  'text-sm font-medium transition-colors duration-200 relative group',
-                  scrolled ? 'text-muted hover:text-forest' : 'text-white/80 hover:text-white',
-                ].join(' ')}
+                onMouseEnter={() => setHoverIdx(i)}
+                onMouseLeave={() => setHoverIdx(null)}
+                style={{
+                  fontFamily: 'var(--ff-body)',
+                  fontSize: 13, fontWeight: 500,
+                  letterSpacing: '0.06em', textTransform: 'uppercase',
+                  color: hoverIdx === i ? 'var(--gold)' : 'var(--muted)',
+                  transition: 'color 0.25s',
+                  position: 'relative',
+                }}
               >
                 {label}
-                <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-accent transition-all duration-300 group-hover:w-full" />
+                <span style={{
+                  position: 'absolute', bottom: -2, left: 0, right: 0, height: 1,
+                  background: 'var(--gold)',
+                  transform: hoverIdx === i ? 'scaleX(1)' : 'scaleX(0)',
+                  transformOrigin: 'left',
+                  transition: 'transform 0.3s cubic-bezier(0.16,1,0.3,1)',
+                }} />
               </a>
             ))}
-          </nav>
-
-          {/* Desktop CTAs */}
-          <div className="hidden lg:flex items-center gap-3">
-            <a
-              href="tel:+917700071665"
-              onClick={handleCall}
-              className={[
-                'btn btn-outline text-sm py-2.5 px-5',
-                scrolled ? '' : 'border-white/30 text-white hover:bg-white/10 hover:border-white',
-              ].join(' ')}
-              aria-label="Call Kosha Interiors"
-            >
-              <PhoneIcon />
-              Call Us
-            </a>
-            <button
-              onClick={handleWhatsApp}
-              className="btn btn-primary text-sm py-2.5 px-5"
-              aria-label="WhatsApp Kosha Interiors"
-            >
-              <WhatsAppIcon />
-              Free Consultation
-            </button>
           </div>
 
-          {/* Mobile Hamburger */}
+          {/* Desktop CTA */}
           <button
-            className="lg:hidden flex flex-col gap-[5px] p-2 cursor-pointer"
-            onClick={() => setMenuOpen(true)}
-            aria-label="Open navigation menu"
-            aria-expanded={menuOpen}
+            onClick={wa}
+            className="hidden md:flex"
+            style={{
+              fontFamily: 'var(--ff-body)',
+              fontSize: 12, fontWeight: 700,
+              letterSpacing: '0.12em', textTransform: 'uppercase',
+              padding: '12px 28px',
+              background: 'var(--ink)',
+              color: 'var(--cream)',
+              border: 'none',
+              borderRadius: 2,
+              transition: 'background 0.3s, transform 0.3s cubic-bezier(0.16,1,0.3,1)',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.background = 'var(--gold)'; e.currentTarget.style.transform = 'translateY(-2px)' }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'var(--ink)'; e.currentTarget.style.transform = 'translateY(0)' }}
           >
-            {[0,1,2].map(i => (
-              <span
-                key={i}
-                className={[
-                  'block w-[22px] h-[2px] rounded-full transition-all duration-300',
-                  scrolled ? 'bg-forest' : 'bg-white',
-                ].join(' ')}
-              />
-            ))}
+            Free Visit
+          </button>
+
+          {/* Hamburger — morphing lines */}
+          <button
+            onClick={() => setOpen(!open)}
+            aria-label={open ? 'Close menu' : 'Open menu'}
+            className="md:hidden"
+            style={{ width: 44, height: 44, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 6, background: 'none', border: 'none', padding: 8 }}
+          >
+            <span style={{
+              display: 'block', height: 1.5, background: 'var(--ink)',
+              transition: 'transform 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.3s',
+              transform: open ? 'translateY(7.5px) rotate(45deg)' : 'none',
+            }} />
+            <span style={{
+              display: 'block', height: 1.5, background: 'var(--ink)', width: '70%',
+              transition: 'transform 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.3s',
+              opacity: open ? 0 : 1,
+              transform: open ? 'translateX(-8px)' : 'none',
+            }} />
+            <span style={{
+              display: 'block', height: 1.5, background: 'var(--ink)',
+              transition: 'transform 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.3s',
+              transform: open ? 'translateY(-7.5px) rotate(-45deg)' : 'none',
+            }} />
           </button>
         </div>
-      </header>
+      </nav>
 
-      {/* ── Mobile Menu Overlay ───────────────────────────────── */}
+      {/* ── Full-screen mobile overlay ── */}
       <div
-        className={[
-          'fixed inset-0 z-[60] bg-bg flex flex-col transition-all duration-300',
-          menuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none',
-        ].join(' ')}
-        role="dialog"
-        aria-modal="true"
-        aria-label="Mobile navigation"
+        style={{
+          position: 'fixed', inset: 0, zIndex: 40,
+          background: 'var(--ink)',
+          transition: 'clip-path 0.7s cubic-bezier(0.16,1,0.3,1)',
+          clipPath: open ? 'circle(150% at calc(100% - 40px) 40px)' : 'circle(0% at calc(100% - 40px) 40px)',
+          display: 'flex', flexDirection: 'column',
+          padding: 'clamp(100px,18vw,140px) clamp(28px,6vw,60px) 40px',
+          overflow: 'hidden',
+        }}
+        aria-hidden={!open}
       >
-        {/* Close button */}
-        <button
-          className="absolute top-5 right-6 text-3xl text-forest leading-none"
-          onClick={() => setMenuOpen(false)}
-          aria-label="Close navigation menu"
-        >
-          ✕
-        </button>
+        {/* Big editorial number */}
+        <span style={{
+          position: 'absolute', bottom: -40, right: -20,
+          fontFamily: 'var(--ff-display)',
+          fontSize: 'clamp(180px,30vw,320px)',
+          fontWeight: 700, lineHeight: 1,
+          color: 'rgba(255,255,255,0.03)',
+          userSelect: 'none', pointerEvents: 'none',
+          letterSpacing: '-0.05em',
+        }} aria-hidden="true">K</span>
 
-        {/* Logo repeat */}
-        <div className="px-6 pt-6">
-          <span className="font-serif text-xl font-bold text-forest">
-            Kosha <span className="text-accent">Interiors</span>
-          </span>
-        </div>
-
-        {/* Links */}
-        <nav className="flex flex-col items-start px-6 pt-12 gap-8 flex-1" aria-label="Mobile navigation">
-          {NAV_LINKS.map(({ label, href }) => (
+        {/* Nav links — editorial large */}
+        <nav style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 'clamp(16px,4vw,28px)' }}>
+          {LINKS.map(({ label, href }, i) => (
             <a
               key={href}
               href={href}
-              onClick={() => setMenuOpen(false)}
-              className="font-serif text-3xl font-semibold text-forest hover:text-accent transition-colors duration-200"
+              onClick={() => setOpen(false)}
+              style={{
+                fontFamily: 'var(--ff-display)',
+                fontSize: 'clamp(42px,8vw,80px)',
+                fontWeight: 300,
+                lineHeight: 1.05,
+                color: 'var(--cream)',
+                letterSpacing: '-0.02em',
+                display: 'flex', alignItems: 'center', gap: 16,
+                transition: 'color 0.3s, transform 0.4s cubic-bezier(0.16,1,0.3,1)',
+                transitionDelay: open ? `${i * 0.06}s` : '0s',
+                opacity: open ? 1 : 0,
+                transform: open ? 'translateX(0)' : 'translateX(-30px)',
+              }}
             >
+              <span style={{ fontSize: 12, fontFamily: 'var(--ff-body)', color: 'var(--gold)', letterSpacing: '0.15em', fontWeight: 700, minWidth: 24 }}>0{i + 1}</span>
               {label}
             </a>
           ))}
         </nav>
 
-        {/* Mobile CTAs */}
-        <div className="px-6 pb-10 flex flex-col gap-3 border-t border-border pt-6">
+        {/* Bottom contact row */}
+        <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 28, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: 12 }}>
+          <div>
+            <p style={{ fontSize: 10, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: 6, fontWeight: 700 }}>Call / WhatsApp</p>
+            <a href="tel:+917700071665" style={{ fontFamily: 'var(--ff-display)', fontSize: 22, color: 'var(--cream)', fontWeight: 400 }}>+91 77000 71665</a>
+          </div>
           <button
-            onClick={() => { setMenuOpen(false); handleWhatsApp() }}
-            className="btn btn-primary w-full justify-center text-base"
+            onClick={() => { setOpen(false); wa() }}
+            style={{
+              fontFamily: 'var(--ff-body)', fontSize: 11, fontWeight: 700,
+              letterSpacing: '0.14em', textTransform: 'uppercase',
+              padding: '14px 32px', background: 'var(--gold)', color: 'var(--ink)',
+              border: 'none', borderRadius: 2,
+            }}
           >
-            <WhatsAppIcon />
-            Book Free Site Visit
+            Book Free Visit
           </button>
-          <a
-            href="tel:+917700071665"
-            onClick={() => { setMenuOpen(false); handleCall() }}
-            className="btn btn-outline w-full justify-center text-base"
-          >
-            <PhoneIcon />
-            Call +91 77000 71665
-          </a>
         </div>
       </div>
     </>
-  )
-}
-
-/* ── Inline SVG Icons ────────────────────────────────────── */
-function WhatsAppIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-    </svg>
-  )
-}
-
-function PhoneIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.01 1.18 2 2 0 012 .01h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92v2z"/>
-    </svg>
   )
 }
