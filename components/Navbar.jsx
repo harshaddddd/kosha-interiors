@@ -11,7 +11,6 @@ const LINKS = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen]         = useState(false)
-  const [hoverIdx, setHoverIdx] = useState(null)
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 60)
@@ -31,127 +30,104 @@ export default function Navbar() {
 
   return (
     <>
-      {/* ── Nav bar ── */}
-      <nav
-        style={{
-          position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50,
-          padding: scrolled ? '14px 0' : '24px 0',
-          transition: 'padding 0.4s cubic-bezier(0.16,1,0.3,1), background 0.4s, backdrop-filter 0.4s',
-          background: scrolled ? 'rgba(245,239,230,0.92)' : 'transparent',
-          backdropFilter: scrolled ? 'blur(14px)' : 'none',
-          borderBottom: scrolled ? '1px solid rgba(201,169,110,0.15)' : '1px solid transparent',
-        }}
-      >
-        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 clamp(20px,5vw,60px)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <nav style={{
+        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50,
+        padding: scrolled ? '12px 0' : '20px 0',
+        transition: 'padding 0.4s cubic-bezier(0.16,1,0.3,1), background 0.4s, box-shadow 0.4s',
+        background: scrolled ? 'rgba(245,239,230,0.95)' : 'transparent',
+        backdropFilter: scrolled ? 'blur(14px)' : 'none',
+        boxShadow: scrolled ? '0 1px 0 rgba(201,169,110,0.15)' : 'none',
+      }}>
+        <div style={{
+          maxWidth: 1280, margin: '0 auto',
+          padding: '0 clamp(20px,5vw,60px)',
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        }}>
 
           {/* Logo */}
-          <a href="#" style={{ fontFamily: 'var(--ff-display)', fontSize: 22, fontWeight: 600, color: 'var(--ink)', letterSpacing: '-0.01em', lineHeight: 1 }}>
+          <a href="#" style={{ fontFamily: 'var(--ff-display)', fontSize: 22, fontWeight: 600, color: scrolled ? 'var(--ink)' : 'var(--cream)', letterSpacing: '-0.01em', lineHeight: 1, transition: 'color 0.3s', zIndex: 60 }}>
             Kosha<span style={{ color: 'var(--gold)' }}>.</span>
           </a>
 
-          {/* Desktop links */}
-          <div style={{ display: 'flex', gap: 40, alignItems: 'center' }} className="hidden md:flex">
-            {LINKS.map(({ label, href }, i) => (
-              <a
-                key={href}
-                href={href}
-                onMouseEnter={() => setHoverIdx(i)}
-                onMouseLeave={() => setHoverIdx(null)}
-                style={{
-                  fontFamily: 'var(--ff-body)',
-                  fontSize: 13, fontWeight: 500,
-                  letterSpacing: '0.06em', textTransform: 'uppercase',
-                  color: hoverIdx === i ? 'var(--gold)' : 'var(--muted)',
-                  transition: 'color 0.25s',
-                  position: 'relative',
-                }}
-              >
-                {label}
-                <span style={{
-                  position: 'absolute', bottom: -2, left: 0, right: 0, height: 1,
-                  background: 'var(--gold)',
-                  transform: hoverIdx === i ? 'scaleX(1)' : 'scaleX(0)',
-                  transformOrigin: 'left',
-                  transition: 'transform 0.3s cubic-bezier(0.16,1,0.3,1)',
-                }} />
-              </a>
+          {/* Desktop nav */}
+          <div style={{ display: 'flex', gap: 36, alignItems: 'center' }} className="hidden-mobile">
+            {LINKS.map(({ label, href }) => (
+              <a key={href} href={href} style={{
+                fontFamily: 'var(--ff-body)', fontSize: 12, fontWeight: 600,
+                letterSpacing: '0.08em', textTransform: 'uppercase',
+                color: scrolled ? 'var(--muted)' : 'rgba(245,239,230,0.7)',
+                transition: 'color 0.2s', position: 'relative',
+              }}
+              onMouseEnter={e => e.currentTarget.style.color = 'var(--gold)'}
+              onMouseLeave={e => e.currentTarget.style.color = scrolled ? 'var(--muted)' : 'rgba(245,239,230,0.7)'}
+              >{label}</a>
             ))}
+            <button onClick={wa} style={{
+              fontFamily: 'var(--ff-body)', fontSize: 11, fontWeight: 700,
+              letterSpacing: '0.12em', textTransform: 'uppercase',
+              padding: '11px 24px', minHeight: 44,
+              background: 'var(--gold)', color: 'var(--ink)',
+              border: 'none', borderRadius: 2,
+              transition: 'background 0.3s, transform 0.3s',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.background = '#dbb87a'; e.currentTarget.style.transform = 'translateY(-1px)' }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'var(--gold)'; e.currentTarget.style.transform = 'none' }}
+            >Free Visit</button>
           </div>
 
-          {/* Desktop CTA */}
-          <button
-            onClick={wa}
-            className="hidden md:flex"
-            style={{
-              fontFamily: 'var(--ff-body)',
-              fontSize: 12, fontWeight: 700,
-              letterSpacing: '0.12em', textTransform: 'uppercase',
-              padding: '12px 28px',
-              background: 'var(--ink)',
-              color: 'var(--cream)',
-              border: 'none',
-              borderRadius: 2,
-              transition: 'background 0.3s, transform 0.3s cubic-bezier(0.16,1,0.3,1)',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.background = 'var(--gold)'; e.currentTarget.style.transform = 'translateY(-2px)' }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'var(--ink)'; e.currentTarget.style.transform = 'translateY(0)' }}
-          >
-            Free Visit
-          </button>
-
-          {/* Hamburger — morphing lines */}
+          {/* Hamburger */}
           <button
             onClick={() => setOpen(!open)}
             aria-label={open ? 'Close menu' : 'Open menu'}
-            className="md:hidden"
-            style={{ width: 44, height: 44, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 6, background: 'none', border: 'none', padding: 8 }}
+            aria-expanded={open}
+            className="show-mobile"
+            style={{
+              width: 44, height: 44, display: 'flex', flexDirection: 'column',
+              justifyContent: 'center', gap: 5, background: 'none', border: 'none',
+              padding: '0 4px', zIndex: 60,
+            }}
           >
-            <span style={{
-              display: 'block', height: 1.5, background: 'var(--ink)',
-              transition: 'transform 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.3s',
-              transform: open ? 'translateY(7.5px) rotate(45deg)' : 'none',
-            }} />
-            <span style={{
-              display: 'block', height: 1.5, background: 'var(--ink)', width: '70%',
-              transition: 'transform 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.3s',
-              opacity: open ? 0 : 1,
-              transform: open ? 'translateX(-8px)' : 'none',
-            }} />
-            <span style={{
-              display: 'block', height: 1.5, background: 'var(--ink)',
-              transition: 'transform 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.3s',
-              transform: open ? 'translateY(-7.5px) rotate(-45deg)' : 'none',
-            }} />
+            {[
+              { transform: open ? 'translateY(10px) rotate(45deg)' : 'none' },
+              { opacity: open ? 0 : 1, transform: open ? 'translateX(-6px)' : 'none', width: open ? '100%' : '65%' },
+              { transform: open ? 'translateY(-10px) rotate(-45deg)' : 'none' },
+            ].map((style, i) => (
+              <span key={i} style={{
+                display: 'block', height: 1.5,
+                background: open ? 'var(--cream)' : (scrolled ? 'var(--ink)' : 'var(--cream)'),
+                borderRadius: 2,
+                transition: 'all 0.4s cubic-bezier(0.16,1,0.3,1)',
+                ...style,
+              }} />
+            ))}
           </button>
         </div>
       </nav>
 
-      {/* ── Full-screen mobile overlay ── */}
-      <div
-        style={{
-          position: 'fixed', inset: 0, zIndex: 40,
-          background: 'var(--ink)',
-          transition: 'clip-path 0.7s cubic-bezier(0.16,1,0.3,1)',
-          clipPath: open ? 'circle(150% at calc(100% - 40px) 40px)' : 'circle(0% at calc(100% - 40px) 40px)',
-          display: 'flex', flexDirection: 'column',
-          padding: 'clamp(100px,18vw,140px) clamp(28px,6vw,60px) 40px',
-          overflow: 'hidden',
-        }}
-        aria-hidden={!open}
-      >
-        {/* Big editorial number */}
+      {/* Mobile overlay */}
+      <div style={{
+        position: 'fixed', inset: 0, zIndex: 40,
+        background: 'var(--ink)',
+        transition: 'clip-path 0.65s cubic-bezier(0.16,1,0.3,1)',
+        clipPath: open ? 'circle(150% at calc(100% - 42px) 32px)' : 'circle(0% at calc(100% - 42px) 32px)',
+        display: 'flex', flexDirection: 'column',
+        padding: '0 clamp(24px,6vw,56px)',
+        overflow: 'hidden',
+      }} aria-hidden={!open}>
+
+        {/* Big decorative letter */}
         <span style={{
           position: 'absolute', bottom: -40, right: -20,
           fontFamily: 'var(--ff-display)',
-          fontSize: 'clamp(180px,30vw,320px)',
+          fontSize: 'clamp(200px,40vw,340px)',
           fontWeight: 700, lineHeight: 1,
           color: 'rgba(255,255,255,0.03)',
           userSelect: 'none', pointerEvents: 'none',
           letterSpacing: '-0.05em',
         }} aria-hidden="true">K</span>
 
-        {/* Nav links — editorial large */}
-        <nav style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 'clamp(16px,4vw,28px)' }}>
+        {/* Nav links */}
+        <nav style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 8, paddingTop: 80 }}>
           {LINKS.map(({ label, href }, i) => (
             <a
               key={href}
@@ -159,43 +135,45 @@ export default function Navbar() {
               onClick={() => setOpen(false)}
               style={{
                 fontFamily: 'var(--ff-display)',
-                fontSize: 'clamp(42px,8vw,80px)',
-                fontWeight: 300,
-                lineHeight: 1.05,
+                fontSize: 'clamp(40px,10vw,72px)',
+                fontWeight: 300, lineHeight: 1.1,
                 color: 'var(--cream)',
                 letterSpacing: '-0.02em',
                 display: 'flex', alignItems: 'center', gap: 16,
-                transition: 'color 0.3s, transform 0.4s cubic-bezier(0.16,1,0.3,1)',
-                transitionDelay: open ? `${i * 0.06}s` : '0s',
+                padding: '10px 0',
+                borderBottom: '1px solid rgba(255,255,255,0.06)',
+                transition: `opacity 0.5s cubic-bezier(0.16,1,0.3,1) ${i * 0.07}s, transform 0.5s cubic-bezier(0.16,1,0.3,1) ${i * 0.07}s`,
                 opacity: open ? 1 : 0,
-                transform: open ? 'translateX(0)' : 'translateX(-30px)',
+                transform: open ? 'translateX(0)' : 'translateX(-20px)',
               }}
             >
-              <span style={{ fontSize: 12, fontFamily: 'var(--ff-body)', color: 'var(--gold)', letterSpacing: '0.15em', fontWeight: 700, minWidth: 24 }}>0{i + 1}</span>
+              <span style={{ fontSize: 10, fontFamily: 'var(--ff-body)', color: 'var(--gold)', letterSpacing: '0.16em', fontWeight: 700, minWidth: 22 }}>0{i + 1}</span>
               {label}
             </a>
           ))}
         </nav>
 
-        {/* Bottom contact row */}
-        <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 28, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: 12 }}>
-          <div>
-            <p style={{ fontSize: 10, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: 6, fontWeight: 700 }}>Call / WhatsApp</p>
-            <a href="tel:+917700071665" style={{ fontFamily: 'var(--ff-display)', fontSize: 22, color: 'var(--cream)', fontWeight: 400 }}>+91 77000 71665</a>
-          </div>
-          <button
-            onClick={() => { setOpen(false); wa() }}
-            style={{
-              fontFamily: 'var(--ff-body)', fontSize: 11, fontWeight: 700,
-              letterSpacing: '0.14em', textTransform: 'uppercase',
-              padding: '14px 32px', background: 'var(--gold)', color: 'var(--ink)',
-              border: 'none', borderRadius: 2,
-            }}
-          >
-            Book Free Visit
-          </button>
+        {/* Bottom contact */}
+        <div style={{ paddingBottom: 40, paddingTop: 28, borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+          <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: 8 }}>Call / WhatsApp</p>
+          <a href="tel:+917700071665" style={{ fontFamily: 'var(--ff-display)', fontSize: 'clamp(20px,5vw,28px)', color: 'var(--cream)', fontWeight: 300, display: 'block', marginBottom: 20 }}>+91 77000 71665</a>
+          <button onClick={() => { setOpen(false); wa() }} style={{
+            fontFamily: 'var(--ff-body)', fontSize: 11, fontWeight: 700,
+            letterSpacing: '0.14em', textTransform: 'uppercase',
+            padding: '14px 32px', minHeight: 48, width: '100%',
+            background: 'var(--gold)', color: 'var(--ink)', border: 'none', borderRadius: 2,
+          }}>Book Free Site Visit</button>
         </div>
       </div>
+
+      <style>{`
+        .hidden-mobile { display: flex !important; }
+        .show-mobile   { display: none  !important; }
+        @media (max-width: 767px) {
+          .hidden-mobile { display: none  !important; }
+          .show-mobile   { display: flex  !important; }
+        }
+      `}</style>
     </>
   )
 }
