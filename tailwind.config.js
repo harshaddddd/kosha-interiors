@@ -1,29 +1,17 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    './app/**/*.{js,jsx}',
-    './components/**/*.{js,jsx}',
-  ],
-  theme: {
-    extend: {
-      colors: {
-        ink:      '#0D0D0D',
-        'ink-soft':'#1A1A1A',
-        cream:    '#F5EFE6',
-        'cream-dk':'#EDE4D7',
-        gold:     '#C9A96E',
-        'gold-lt':'#E8D5B0',
-        muted:    '#7A746C',
-        surface:  '#FDFAF6',
+  content:['./app/**/*.{js,jsx}','./components/**/*.{js,jsx}'],
+  theme:{
+    extend:{
+      colors:{
+        ink:'#0A0A08',cream:'#F2EDDF',gold:'#C8A96E',
+        rust:'#A63D2F',sage:'#3D5247',muted:'#7A7468',
       },
-      fontFamily: {
-        display: ['Cormorant Garant', 'Georgia', 'serif'],
-        body:    ['Cabinet Grotesk', 'system-ui', 'sans-serif'],
-      },
-      transitionTimingFunction: {
-        expo: 'cubic-bezier(0.16, 1, 0.3, 1)',
+      fontFamily:{
+        display:['Cormorant Garant','Georgia','serif'],
+        sans:['Syne','system-ui','sans-serif'],
       },
     },
   },
-  plugins: [],
+  plugins:[],
 }
