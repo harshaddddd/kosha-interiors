@@ -1,4 +1,8 @@
 'use client'
+
+function openWA(msg) {
+  window.open('https://wa.me/917700071665?text=' + encodeURIComponent(msg), '_blank')
+}
 import{useState,useEffect}from'react'
 export default function WhatsAppFloat(){
   const[v,setV]=useState(false)
@@ -7,7 +11,7 @@ export default function WhatsAppFloat(){
     <div style={{position:'fixed',bottom:24,right:20,zIndex:49,opacity:v?1:0,transform:v?'scale(1)':'scale(.7) translateY(20px)',transition:'all .6s cubic-bezier(0.16,1,0.3,1)'}}>
       {v&&<span style={{position:'absolute',inset:0,borderRadius:'50%',background:'rgba(37,211,102,.3)',animation:'wp 2s ease-out infinite'}} aria-hidden="true"/>}
       <button
-        onClick={()=>window.open(`https://wa.me/917700071665?text=${encodeURIComponent("Hi Vrushali! I'd like to discuss interior design.")},'_blank')`}
+        onClick={()=>openWA("Hi Vrushali! I'd like to discuss interior design.")}
         aria-label="Chat on WhatsApp"
         style={{position:'relative',width:52,height:52,borderRadius:'50%',background:'#25D366',border:'none',display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 4px 20px rgba(37,211,102,.4)',transition:'transform .35s cubic-bezier(0.16,1,0.3,1),box-shadow .3s'}}
         onMouseEnter={e=>{e.currentTarget.style.transform='scale(1.12)';e.currentTarget.style.boxShadow='0 8px 28px rgba(37,211,102,.5)'}}

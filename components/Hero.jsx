@@ -1,4 +1,8 @@
 'use client'
+
+function openWA(msg) {
+  window.open('https://wa.me/917700071665?text=' + encodeURIComponent(msg), '_blank')
+}
 import{useEffect,useRef,useState}from'react'
 import Image from'next/image'
 
@@ -17,7 +21,7 @@ export default function Hero(){
     return()=>window.removeEventListener('scroll',fn)
   },[])
 
-  const wa=()=>window.open(`https://wa.me/917700071665?text=${encodeURIComponent("Hi Vrushali! I'd like to book a free site visit.")},'_blank'`)
+  const wa=()=>openWA("Hi Vrushali! I'd like to book a free site visit.")
 
   return(
     <section id="home" style={{position:'relative',minHeight:'100svh',background:'var(--ink)',overflow:'hidden',display:'flex',flexDirection:'column',justifyContent:'flex-end'}}>

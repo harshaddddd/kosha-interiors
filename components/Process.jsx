@@ -1,4 +1,8 @@
 'use client'
+
+function openWA(msg) {
+  window.open('https://wa.me/917700071665?text=' + encodeURIComponent(msg), '_blank')
+}
 import{useEffect,useRef}from'react'
 
 const STEPS=[
@@ -35,7 +39,7 @@ export default function Process(){
               A transparent, stress-free process built around your schedule and peace of mind.
             </p>
             <button className="rv d3"
-              onClick={()=>window.open(`https://wa.me/917700071665?text=${encodeURIComponent("Hi! I want to book a free site visit.")},'_blank')`}
+              onClick={()=>openWA("Hi! I want to book a free site visit.")}
               style={{fontSize:10,fontWeight:800,letterSpacing:'.16em',textTransform:'uppercase',padding:'14px 26px',minHeight:48,background:'var(--ink)',color:'var(--cream)',border:'none',borderRadius:2,transition:'background .3s'}}
               onMouseEnter={e=>{e.currentTarget.style.background='var(--gold)';e.currentTarget.style.color='var(--ink)'}}
               onMouseLeave={e=>{e.currentTarget.style.background='var(--ink)';e.currentTarget.style.color='var(--cream)'}}

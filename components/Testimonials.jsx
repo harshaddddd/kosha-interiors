@@ -1,4 +1,8 @@
 'use client'
+
+function openWA(msg) {
+  window.open('https://wa.me/917700071665?text=' + encodeURIComponent(msg), '_blank')
+}
 import{useEffect,useRef,useState}from'react'
 
 const R=[
