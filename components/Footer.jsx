@@ -17,7 +17,7 @@ export default function Footer() {
             <p style={{ fontFamily: "'Cormorant Garant',serif", fontSize: 26, fontWeight: 300, color: 'var(--ink)', letterSpacing: '-.01em', marginBottom: 10 }}>
               Kosha<span style={{ color: 'var(--gold)' }}>.</span>
             </p>
-            <p style={{ fontFamily: "'Syne',sans-serif", fontSize: 12, color: 'var(--muted)', maxWidth: 220, lineHeight: 1.7, marginBottom: 16 }}>
+            <p style={{ fontFamily: "'Jost',sans-serif", fontSize: 12, color: 'var(--muted)', maxWidth: 220, lineHeight: 1.7, marginBottom: 16 }}>
               Pune's highest-rated woman-owned interior design studio.
             </p>
             <div style={{ display: 'flex', gap: 3, marginBottom: 4 }}>
@@ -37,7 +37,7 @@ export default function Footer() {
               <a
                 key={l}
                 href={'#' + l.toLowerCase()}
-                style={{ display: 'block', fontFamily: "'Syne',sans-serif", fontSize: 13, color: 'var(--muted)', marginBottom: 10, minHeight: 28, lineHeight: '28px', transition: 'color .2s' }}
+                style={{ display: 'block', fontFamily: "'Jost',sans-serif", fontSize: 13, color: 'var(--muted)', marginBottom: 10, minHeight: 28, lineHeight: '28px', transition: 'color .2s' }}
                 onMouseEnter={e => { e.currentTarget.style.color = 'var(--ink)' }}
                 onMouseLeave={e => { e.currentTarget.style.color = 'var(--muted)' }}
               >{l}</a>
@@ -51,7 +51,7 @@ export default function Footer() {
             <p style={{ fontSize: 13, color: 'var(--muted)', marginBottom: 10 }}>Dhanori, Pune</p>
             <button
               onClick={() => openWA("Hi Vrushali! I'd like to book a free site visit.")}
-              style={{ marginTop: 12, fontFamily: "'Syne',sans-serif", fontSize: 9, fontWeight: 800, letterSpacing: '.16em', textTransform: 'uppercase', padding: '12px 22px', minHeight: 44, background: 'var(--gold)', color: 'var(--ink)', border: 'none', borderRadius: 2, width: '100%' }}
+              style={{ marginTop: 12, fontFamily: "'Jost',sans-serif", fontSize: 9, fontWeight: 800, letterSpacing: '.16em', textTransform: 'uppercase', padding: '12px 22px', minHeight: 44, background: 'var(--gold)', color: 'var(--ink)', border: 'none', borderRadius: 2, width: '100%' }}
             >
               Book Free Visit
             </button>

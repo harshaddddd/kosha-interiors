@@ -34,7 +34,7 @@ export default function MeetDesigner() {
               <Image src="/images/vrushali.webp" alt="Vrushali, founder of Kosha Interiors" fill style={{ objectFit: 'cover', objectPosition: 'top center', filter: 'brightness(.9) contrast(1.05)' }} sizes="(max-width:767px) 90vw, 45vw" />
               <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(200,169,110,.2) 0%, transparent 50%)' }} aria-hidden="true" />
               <div style={{ position: 'absolute', bottom: 24, left: 24, right: 24 }}>
-                <p style={{ fontFamily: "'Syne',sans-serif", fontSize: 9, fontWeight: 800, letterSpacing: '.2em', textTransform: 'uppercase', color: 'rgba(242,237,223,.5)', marginBottom: 4 }}>Woman-Owned Studio</p>
+                <p style={{ fontFamily: "'Jost',sans-serif", fontSize: 9, fontWeight: 800, letterSpacing: '.2em', textTransform: 'uppercase', color: 'rgba(242,237,223,.5)', marginBottom: 4 }}>Woman-Owned Studio</p>
                 <p style={{ fontFamily: "'Cormorant Garant',serif", fontSize: 'clamp(18px,2.5vw,28px)', fontWeight: 300, color: 'var(--cream)', lineHeight: 1.2 }}>"I handle the chaos<br />so you don't have to."</p>
               </div>
             </div>
@@ -52,8 +52,8 @@ export default function MeetDesigner() {
             </h2>
             <div className="rv d2" style={{ width: 44, height: 1, background: 'var(--gold)', marginBottom: 28 }} aria-hidden="true" />
             <div className="rv d2" style={{ display: 'flex', flexDirection: 'column', gap: 14, marginBottom: 36 }}>
-              <p style={{ fontFamily: "'Syne',sans-serif", fontSize: 'clamp(13px,1vw,14px)', color: 'rgba(242,237,223,.55)', lineHeight: 1.85 }}>I started Kosha Interiors with one belief: a beautiful home should not require you to stress over contractors, budgets, or timelines.</p>
-              <p style={{ fontFamily: "'Syne',sans-serif", fontSize: 'clamp(13px,1vw,14px)', color: 'rgba(242,237,223,.55)', lineHeight: 1.85 }}>Every project I act as the single point of contact between you and every tradesperson on site. You decide on design. I handle execution.</p>
+              <p style={{ fontFamily: "'Jost',sans-serif", fontSize: 'clamp(13px,1vw,14px)', color: 'rgba(242,237,223,.55)', lineHeight: 1.85 }}>I started Kosha Interiors with one belief: a beautiful home should not require you to stress over contractors, budgets, or timelines.</p>
+              <p style={{ fontFamily: "'Jost',sans-serif", fontSize: 'clamp(13px,1vw,14px)', color: 'rgba(242,237,223,.55)', lineHeight: 1.85 }}>Every project I act as the single point of contact between you and every tradesperson on site. You decide on design. I handle execution.</p>
             </div>
             <div className="rv d3" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1, marginBottom: 36, borderRadius: 4, overflow: 'hidden', border: '1px solid rgba(255,255,255,.06)' }}>
               {CREDS.map(([v, l]) => (

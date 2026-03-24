@@ -20,7 +20,7 @@ export default function RootLayout({children}){
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com"/>
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous"/>
-        <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,300;0,400;0,700;1,300;1,700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet"/>
+        <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,300;0,400;0,700;1,300;1,700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet"/>
         <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(schema)}}/>
         <meta name="theme-color" content="#0A0A08"/>
       </head>

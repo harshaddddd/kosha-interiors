@@ -114,7 +114,7 @@ export default function Navbar() {
               transform: open ? 'none' : 'translateX(-24px)',
               transition: 'opacity .55s cubic-bezier(0.16,1,0.3,1) ' + (i * 0.07) + 's, transform .55s cubic-bezier(0.16,1,0.3,1) ' + (i * 0.07) + 's',
             }}>
-              <span style={{ fontSize: 10, fontWeight: 800, letterSpacing: '.18em', color: 'var(--gold)', minWidth: 24, fontFamily: "'Syne',sans-serif" }}>0{i + 1}</span>
+              <span style={{ fontSize: 10, fontWeight: 800, letterSpacing: '.18em', color: 'var(--gold)', minWidth: 24, fontFamily: "'Jost',sans-serif" }}>0{i + 1}</span>
               {l}
             </a>
           ))}
@@ -125,7 +125,7 @@ export default function Navbar() {
           <a href="tel:+917700071665" style={{ fontFamily: "'Cormorant Garant',serif", fontSize: 'clamp(22px,5vw,32px)', color: 'var(--cream)', fontWeight: 300, display: 'block', marginBottom: 20 }}>+91 77000 71665</a>
           <button
             onClick={() => { setOpen(false); openWA("Hi Vrushali! I'd like to book a free site visit.") }}
-            style={{ fontFamily: "'Syne',sans-serif", fontSize: 10, fontWeight: 800, letterSpacing: '.16em', textTransform: 'uppercase', padding: '15px 32px', minHeight: 50, width: '100%', background: 'var(--gold)', color: 'var(--ink)', border: 'none', borderRadius: 2 }}
+            style={{ fontFamily: "'Jost',sans-serif", fontSize: 10, fontWeight: 800, letterSpacing: '.16em', textTransform: 'uppercase', padding: '15px 32px', minHeight: 50, width: '100%', background: 'var(--gold)', color: 'var(--ink)', border: 'none', borderRadius: 2 }}
           >Book Free Site Visit</button>
         </div>
       </div>

@@ -74,7 +74,7 @@ export default function Hero(){
 
         {/* Sub */}
         <p style={{
-          fontFamily:"'Syne',sans-serif",
+          fontFamily:"'Jost',sans-serif",
           fontSize:'clamp(13px,1.4vw,16px)',fontWeight:400,
           color:'rgba(242,237,223,.55)',lineHeight:1.8,maxWidth:440,
           marginBottom:'clamp(32px,5vw,52px)',

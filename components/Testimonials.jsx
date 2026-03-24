@@ -62,13 +62,13 @@ export default function Testimonials(){
 
           {/* Reviewer sidebar */}
           <div className="testi-sidebar">
-            <p style={{fontFamily:"'Syne',sans-serif",fontSize:9,color:'rgba(242,237,223,.3)',letterSpacing:'.14em',textTransform:'uppercase',marginBottom:20,fontWeight:700}}>{a+1} / {R.length}</p>
+            <p style={{fontFamily:"'Jost',sans-serif",fontSize:9,color:'rgba(242,237,223,.3)',letterSpacing:'.14em',textTransform:'uppercase',marginBottom:20,fontWeight:700}}>{a+1} / {R.length}</p>
             <div style={{display:'flex',flexDirection:'column',gap:4}}>
               {R.map((r,i)=>(
                 <button key={i} onClick={()=>setA(i)} style={{display:'flex',alignItems:'center',gap:12,background:'none',border:'none',padding:'9px 0 9px 14px',borderLeft:`2px solid ${i===a?'var(--gold)':'transparent'}`,transition:'all .3s',minHeight:48,textAlign:'left'}}>
                   <span style={{width:32,height:32,borderRadius:'50%',background:i===a?'var(--gold)':'rgba(255,255,255,.07)',display:'flex',alignItems:'center',justifyContent:'center',fontFamily:"'Cormorant Garant',serif",fontSize:14,fontWeight:600,color:i===a?'var(--ink)':'rgba(242,237,223,.35)',flexShrink:0,transition:'all .3s'}}>{r.in}</span>
                   <div>
-                    <p style={{fontSize:12,fontWeight:700,color:i===a?'var(--cream)':'rgba(242,237,223,.35)',transition:'color .3s',fontFamily:"'Syne',sans-serif"}}>{r.n}</p>
+                    <p style={{fontSize:12,fontWeight:700,color:i===a?'var(--cream)':'rgba(242,237,223,.35)',transition:'color .3s',fontFamily:"'Jost',sans-serif"}}>{r.n}</p>
                     <p style={{fontSize:9,color:'rgba(242,237,223,.25)',letterSpacing:'.08em',textTransform:'uppercase',fontWeight:700}}>{r.p}</p>
                   </div>
                 </button>
@@ -82,7 +82,7 @@ export default function Testimonials(){
               "{cur.t}"
             </blockquote>
             <div style={{display:'flex',gap:3,marginBottom:10}}>{[...Array(cur.r)].map((_,i)=><svg key={i} width="13" height="13" viewBox="0 0 24 24" fill="var(--gold)" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>)}</div>
-            <p style={{fontFamily:"'Syne',sans-serif",fontSize:13,fontWeight:700,color:'var(--gold)',letterSpacing:'.06em'}}>{cur.n}</p>
+            <p style={{fontFamily:"'Jost',sans-serif",fontSize:13,fontWeight:700,color:'var(--gold)',letterSpacing:'.06em'}}>{cur.n}</p>
             <p style={{fontSize:9,color:'rgba(242,237,223,.4)',letterSpacing:'.12em',textTransform:'uppercase',fontWeight:700,marginTop:3}}>{cur.p}</p>
           </div>
         </div>

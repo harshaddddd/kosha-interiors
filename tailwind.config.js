@@ -9,7 +9,7 @@ module.exports = {
       },
       fontFamily:{
         display:['Cormorant Garant','Georgia','serif'],
-        sans:['Syne','system-ui','sans-serif'],
+        sans:['Jost','system-ui','sans-serif'],
       },
     },
   },

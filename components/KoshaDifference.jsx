@@ -25,7 +25,7 @@ function Row({ n, t, b, stat, i }) {
       </div>
       <div>
         <h3 style={{ fontFamily: "'Cormorant Garant',serif", fontSize: 'clamp(22px,2.8vw,40px)', fontWeight: 400, lineHeight: 1.05, letterSpacing: '-.02em', color: 'var(--ink)', marginBottom: 14 }}>{t}</h3>
-        <p style={{ fontFamily: "'Syne',sans-serif", fontSize: 'clamp(13px,1vw,14px)', color: 'var(--muted)', lineHeight: 1.85 }}>{b}</p>
+        <p style={{ fontFamily: "'Jost',sans-serif", fontSize: 'clamp(13px,1vw,14px)', color: 'var(--muted)', lineHeight: 1.85 }}>{b}</p>
       </div>
       <div style={{ paddingTop: 8, display: 'flex', justifyContent: 'flex-end' }}>
         <span style={{ display: 'inline-block', fontFamily: "'Cormorant Garant',serif", fontSize: 'clamp(12px,1.2vw,15px)', fontStyle: 'italic', fontWeight: 400, padding: '8px 16px', borderRadius: 99, border: '1px solid ' + (h ? 'var(--gold)' : 'rgba(10,10,8,.12)'), color: h ? 'var(--gold)' : 'var(--muted)', transition: 'all .35s cubic-bezier(0.16,1,0.3,1)', whiteSpace: 'nowrap' }}>{stat}</span>

@@ -32,7 +32,7 @@ export default function CTA() {
   }
 
   const LBL = { fontSize: 9, fontWeight: 800, letterSpacing: '.16em', textTransform: 'uppercase', color: 'rgba(242,237,223,.45)', display: 'block', marginBottom: 8 }
-  const INP = { width: '100%', padding: '13px 16px', minHeight: 48, background: 'rgba(255,255,255,.04)', border: '1px solid rgba(255,255,255,.08)', borderRadius: 2, fontSize: 14, color: 'var(--cream)', fontFamily: "'Syne',sans-serif", outline: 'none', transition: 'border-color .2s' }
+  const INP = { width: '100%', padding: '13px 16px', minHeight: 48, background: 'rgba(255,255,255,.04)', border: '1px solid rgba(255,255,255,.08)', borderRadius: 2, fontSize: 14, color: 'var(--cream)', fontFamily: "'Jost',sans-serif", outline: 'none', transition: 'border-color .2s' }
 
   return (
     <section ref={ref} id="contact" style={{ background: 'var(--ink)', padding: 'clamp(64px,9vw,128px) 0', position: 'relative', overflow: 'hidden' }} aria-label="Contact">
@@ -82,7 +82,7 @@ export default function CTA() {
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
                 </div>
                 <h3 style={{ fontFamily: "'Cormorant Garant',serif", fontSize: 28, color: 'var(--cream)', fontWeight: 400 }}>Message Sent!</h3>
-                <p style={{ fontFamily: "'Syne',sans-serif", fontSize: 14, color: 'rgba(242,237,223,.5)', lineHeight: 1.75 }}>Vrushali will reach out on WhatsApp within 2 hours.</p>
+                <p style={{ fontFamily: "'Jost',sans-serif", fontSize: 14, color: 'rgba(242,237,223,.5)', lineHeight: 1.75 }}>Vrushali will reach out on WhatsApp within 2 hours.</p>
               </div>
             ) : (
               <form onSubmit={sub} noValidate style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>

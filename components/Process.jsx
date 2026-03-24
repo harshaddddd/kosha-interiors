@@ -35,7 +35,7 @@ export default function Process(){
             <h2 className="rv d1" style={{fontFamily:"'Cormorant Garant',serif",fontSize:'clamp(30px,4vw,54px)',fontWeight:300,lineHeight:.95,letterSpacing:'-.025em',color:'var(--ink)',marginBottom:20}}>
               From first call<br/>to <em style={{fontStyle:'italic',color:'var(--gold)'}}>dream home.</em>
             </h2>
-            <p className="rv d2" style={{fontFamily:"'Syne',sans-serif",fontSize:'clamp(13px,1vw,14px)',color:'var(--muted)',lineHeight:1.8,maxWidth:260,marginBottom:32}}>
+            <p className="rv d2" style={{fontFamily:"'Jost',sans-serif",fontSize:'clamp(13px,1vw,14px)',color:'var(--muted)',lineHeight:1.8,maxWidth:260,marginBottom:32}}>
               A transparent, stress-free process built around your schedule and peace of mind.
             </p>
             <button className="rv d3"
@@ -55,7 +55,7 @@ export default function Process(){
                 <div>
                   <p style={{fontSize:9,fontWeight:800,letterSpacing:'.2em',textTransform:'uppercase',color:'var(--gold)',marginBottom:10}}>{w}</p>
                   <h3 style={{fontFamily:"'Cormorant Garant',serif",fontSize:'clamp(20px,2.5vw,32px)',fontWeight:400,lineHeight:1.1,letterSpacing:'-.015em',color:'var(--ink)',marginBottom:12}}>{t}</h3>
-                  <p style={{fontFamily:"'Syne',sans-serif",fontSize:'clamp(13px,1vw,14px)',color:'var(--muted)',lineHeight:1.8}}>{b}</p>
+                  <p style={{fontFamily:"'Jost',sans-serif",fontSize:'clamp(13px,1vw,14px)',color:'var(--muted)',lineHeight:1.8}}>{b}</p>
                 </div>
               </div>
             ))}
